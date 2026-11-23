@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Video-to-Hand Retargeting</title>
+  <meta name="claude:viewport-fit-sides" content="cover">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Project detail page: same single column and tokens as the homepage. */
+    :root { --bg:#ffffff; --text:#222; --muted:#555; --faint:#999; --link:#1772d0; --link-hover:#e0821a;
+            --line:#e6e6e6; --soft:#f5f7fa; --plate:#ffffff; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+            --bg:#16181c; --text:#e4e6ea; --muted:#a3a9b3; --faint:#7d838c; --link:#6aa8ec; --link-hover:#f2a54a;
+            --line:#2f333a; --soft:#1f2329; color-scheme:dark; } }
+    :root[data-theme="dark"] {
+            --bg:#16181c; --text:#e4e6ea; --muted:#a3a9b3; --faint:#7d838c; --link:#6aa8ec; --link-hover:#f2a54a;
+            --line:#2f333a; --soft:#1f2329; color-scheme:dark; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font-family:'Lato',Verdana,Helvetica,sans-serif;
+           font-size:15.5px; line-height:1.6; }
+    a { color:var(--link); text-decoration:none; }
+    a:hover { color:var(--link-hover); }
+    .wrap { max-width:860px; margin:0 auto; padding-block:28px 60px;
+            padding-left:max(20px, env(safe-area-inset-left, 0px)); padding-right:max(20px, env(safe-area-inset-right, 0px)); }
+    .back { font-size:14px; }
+    h1 { font-size:27px; font-weight:700; line-height:1.3; margin:18px 0 6px; text-wrap:balance; }
+    .meta { color:var(--muted); margin:0 0 4px; }
+    h2 { font-size:19px; font-weight:700; margin:34px 0 10px; padding-bottom:5px; border-bottom:1px solid var(--line); }
+    p { margin:0 0 12px; }
+    ul { margin:0 0 12px; padding-left:22px; }
+    li { margin:4px 0; }
+    figure { margin:16px 0 20px; }
+    figure img, figure video { display:block; max-width:100%; height:auto; border-radius:8px; border:1px solid var(--line); background:var(--plate); }
+    figcaption { color:var(--muted); font-size:14px; margin-top:6px; }
+    .pair { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:14px; }
+    .pair figure { margin:0; }
+    .tbl { overflow-x:auto; }
+    table { border-collapse:collapse; width:100%; font-size:14.5px; font-variant-numeric:tabular-nums; }
+    th, td { text-align:left; padding:7px 10px; border-bottom:1px solid var(--line); }
+    th { font-weight:700; }
+    td.num, th.num { text-align:right; }
+    tr.ours td { font-weight:700; }
+    .note { color:var(--muted); font-size:14px; }
+    .flow { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:6px 0 14px; }
+    .flow span.step { background:var(--soft); border:1px solid var(--line); border-radius:6px; padding:5px 10px; font-size:14px; }
+    .flow span.arr { color:var(--faint); }
+    footer { margin-top:44px; color:var(--faint); font-size:13px; text-align:center; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">&larr; Fuyi Chen</a>
+
+  <h1>Vision-Based Motion Retargeting from Human Videos to Dexterous Robot Hands</h1>
+  <p class="meta">University of Nottingham Ningbo China &middot; Jun 2026 &ndash; present</p>
+
+  <h2>Goal</h2>
+  <p>Teleoperation rigs for dexterous hands are expensive and slow to use. Ordinary videos of human hands are cheap and plentiful.
+    This project turns RGB videos of a human hand into robot-hand motion, as a scalable source of demonstrations for dexterous
+    manipulation.</p>
+
+  <h2>Pipeline (real2sim)</h2>
+  <div class="flow">
+    <span class="step">RGB video</span><span class="arr">&rarr;</span>
+    <span class="step">MediaPipe: 21 hand keypoints</span><span class="arr">&rarr;</span>
+    <span class="step">human hand motion</span><span class="arr">&rarr;</span>
+    <span class="step">dex-retargeting (kinematic optimisation)</span><span class="arr">&rarr;</span>
+    <span class="step">robot joint trajectory</span>
+  </div>
+  <ul>
+    <li><b>Hand tracking.</b> MediaPipe Hands extracts 21 keypoints per frame from a monocular RGB video.</li>
+    <li><b>Retargeting.</b> dex-retargeting solves a kinematic optimisation that maps the human keypoints to the joint angles of a
+      multi-DoF robot hand, frame by frame.</li>
+    <li><b>Output.</b> A per-frame joint-angle trajectory that drives the robot hand in simulation.</li>
+  </ul>
+
+  <h2>Results</h2>
+  <p>The pipeline reproduces single-finger, whole-hand and special-gesture motions. In each clip, the left side is the input video with
+    the tracked keypoints and the right side is the retargeted robot hand.</p>
+  <div class="pair">
+    <figure><video src="images/dex_v.mp4" autoplay muted loop playsinline></video><figcaption>Special gesture (V sign)</figcaption></figure>
+    <figure><video src="images/dex_three.mp4" autoplay muted loop playsinline></video><figcaption>Three fingers</figcaption></figure>
+    <figure><video src="images/dex_fist.mp4" autoplay muted loop playsinline></video><figcaption>Whole hand (fist)</figcaption></figure>
+  </div>
+
+  <footer>Fuyi Chen &middot; Last updated: Nov 2026</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fuyi Chen</title>
+  <meta name="description" content="Fuyi Chen - computer vision and robot learning: visual reasoning, humanoid whole-body control, vision-language-action models.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Single centered column; photo + bio, then dated lists. Figures sit on a white plate in both themes. */
+    :root { --bg:#ffffff; --text:#222; --muted:#555; --faint:#999; --link:#1772d0; --link-hover:#e0821a;
+            --line:#e6e6e6; --hl:#ffffd0; --notice:#f4f8fd; --empty:#eef0f3; --plate:#ffffff; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+            --bg:#16181c; --text:#e4e6ea; --muted:#a3a9b3; --faint:#7d838c; --link:#6aa8ec; --link-hover:#f2a54a;
+            --line:#2f333a; --hl:#2b2a1c; --notice:#1d2633; --empty:#23262c; color-scheme:dark; } }
+    :root[data-theme="dark"] {
+            --bg:#16181c; --text:#e4e6ea; --muted:#a3a9b3; --faint:#7d838c; --link:#6aa8ec; --link-hover:#f2a54a;
+            --line:#2f333a; --hl:#2b2a1c; --notice:#1d2633; --empty:#23262c; color-scheme:dark; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font-family:'Lato',Verdana,Helvetica,sans-serif; font-size:15px; line-height:1.55; }
+    a { color:var(--link); text-decoration:none; }
+    a:hover { color:var(--link-hover); }
+    .wrap { max-width:860px; margin:0 auto; padding-block:36px 60px;
+            padding-left:max(20px, env(safe-area-inset-left, 0px)); padding-right:max(20px, env(safe-area-inset-right, 0px)); }
+    h1 { text-align:center; font-weight:400; font-size:34px; margin:0 0 26px; }
+    h1 .cn { font-size:28px; }
+    h2 { font-size:21px; font-weight:700; margin:40px 0 14px; padding-bottom:6px; border-bottom:1px solid var(--line); }
+
+    /* intro */
+    .intro { display:flex; gap:32px; align-items:flex-start; }
+    .side { flex:0 0 220px; text-align:center; }
+    .side img { width:220px; border-radius:6px; display:block; }
+    .side .links { margin-top:10px; font-size:14px; }
+    .bio p { margin:0 0 12px; }
+    ul.work { margin:0 0 12px; padding-left:20px; }
+    ul.work li { margin:0 0 6px; }
+    .notice { background:var(--notice); border-left:3px solid var(--link); padding:8px 12px; border-radius:3px; }
+
+    /* news */
+    ul.news { margin:0; padding-left:20px; }
+    ul.news li { margin:4px 0; }
+    .date { color:var(--muted); font-variant-numeric:tabular-nums; }
+
+    /* papers & projects */
+    .paper > div:last-child, .row .what, .bio { min-width:0; }
+    .paper { display:flex; gap:22px; align-items:flex-start; padding:14px 10px; border-radius:6px; }
+    .paper.hl { background:var(--hl); }
+    .thumb { flex:0 0 220px; height:140px; border-radius:10px; overflow:hidden; background:var(--empty);
+             display:flex; align-items:center; justify-content:center; color:var(--faint); font-size:13px; text-align:center; }
+    .thumb img, .thumb video { width:100%; height:100%; object-fit:cover; display:block; }
+    .thumb a { display:block; width:100%; height:100%; }
+    .thumb.fit { background:var(--plate); border:1px solid var(--line); }
+    .thumb.fit img, .thumb.fit video { object-fit:contain; }
+    .thumb.dark { background:#000; border-color:#000; }
+    .ptitle { font-weight:700; font-size:16px; }
+    .authors { margin:3px 0; }
+    .authors .me { font-weight:700; }
+    .venue { font-style:italic; }
+    .plinks { margin:4px 0 6px; }
+    .tldr { color:var(--muted); font-size:14px; margin:0; }
+    .tldr b { color:var(--text); }
+
+    
+    /* education / experience rows */
+    .row { display:flex; justify-content:space-between; gap:16px; margin:0 0 10px; }
+    .row .what { flex:1; }
+    .row .when { color:var(--muted); white-space:nowrap; font-variant-numeric:tabular-nums; }
+    .row .sub { color:var(--muted); font-size:14px; }
+
+    /* viewer for figures and videos */
+    .lb { position:fixed; inset:0; z-index:50; background:rgba(0,0,0,.82); display:flex; align-items:center; justify-content:center;
+          padding:max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+    .lb[hidden] { display:none; }
+    .lb img, .lb video { max-width:100%; max-height:85vh; border-radius:8px; background:#fff; }
+    .lb button { position:absolute; top:max(12px, env(safe-area-inset-top, 0px)); right:max(12px, env(safe-area-inset-right, 0px));
+          font:inherit; font-size:15px; color:#fff; background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.4);
+          border-radius:20px; padding:6px 14px; cursor:pointer; }
+    .lb button:focus-visible { outline:2px solid #fff; outline-offset:2px; }
+    footer { margin-top:50px; text-align:center; color:var(--faint); font-size:13px; }
+
+    @media (max-width:640px) {
+      .intro, .paper { flex-direction:column; align-items:center; }
+      .side, .thumb { flex-basis:auto; width:100%; max-width:320px; }
+      .side img { width:100%; }
+      .row { flex-direction:column; gap:0; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Fuyi Chen <span class="cn">「陈芙仪」</span></h1>
+
+  <!-- ===== Intro ===== -->
+  <div class="intro">
+    <div class="side">
+      <img src="images/profile.jpg" alt="Fuyi Chen">
+      <div class="links">
+        <a href="Fuyi_Chen_CV.pdf">CV</a> |
+        <a href="mailto:scxfc1@nottingham.edu.cn">Email</a> |
+        <a href="https://github.com/fuyichen0725">GitHub</a>
+      </div>
+    </div>
+    <div class="bio">
+      <p>I am an M.Sc. student in Computer Science at the
+        <a href="https://www.nottingham.edu.cn/">University of Nottingham Ningbo China</a>,
+        working with <a href="https://research.nottingham.edu.cn/en/persons/jianfeng-ren/">Dr. Jianfeng Ren</a>.
+        I received my B.F.A. from Chongqing University, in Broadcasting and Television Directing (film and visual media).</p>
+      <p>I work on computer vision and robot learning, with a focus on robots that learn control quickly and act in real time.
+        My most recent project, <a href="https://arxiv.org/abs/2611.16422">BlinkMimic</a>, trains a humanoid to track 40 motion clips
+        in <b>3.4 minutes on a single GPU</b>, and its <a href="https://github.com/fuyichen0725/blinkmimic">code</a> has passed 300 GitHub stars.</p>
+      <p><b>Research Interests:</b> Computer Vision, Robot Learning, Reinforcement Learning, Vision-Language-Action (VLA) Models, Humanoid Control</p>
+      <p class="notice">I am applying for <b>Ph.D. positions starting Fall 2027</b>.</p>
+    </div>
+  </div>
+
+  <!-- ===== News ===== -->
+  <h2>News</h2>
+  <ul class="news">
+    <li><span class="date">[Nov 2026]</span> <a href="https://arxiv.org/abs/2611.16422">BlinkMimic</a> is on arXiv. Its <a href="https://github.com/fuyichen0725/blinkmimic">code</a>, released on Nov 2, passed <b>300 GitHub stars</b> within three weeks.</li>
+    <li><span class="date">[Nov 2026]</span> <a href="https://arxiv.org/abs/2611.01390">Same Path, Less Time (PTS)</a> is on arXiv.</li>
+    <li><span class="date">[Jun 2026]</span> Started a project on retargeting human hand videos to dexterous robot hands.</li>
+    <li><span class="date">[Sep 2025]</span> Started my M.Sc. in Computer Science at UNNC and began research on abstract visual reasoning.</li>
+  </ul>
+
+  <!-- ===== Publications ===== -->
+  <h2>Publications</h2>
+
+  <div class="paper hl">
+    <div class="thumb fit">
+      <a class="zoom" href="images/blinkmimic_full.mp4"><video src="images/blinkmimic.mp4" autoplay muted loop playsinline></video></a>
+    </div>
+    <div>
+      <div class="ptitle"><a href="https://arxiv.org/abs/2611.16422">BlinkMimic: Training a Humanoid Motion Tracker in Minutes on a Single GPU</a></div>
+      <div class="authors"><span class="me">Fuyi Chen</span></div>
+      <div class="venue">arXiv, 2026</div>
+      <div class="plinks"><a href="https://arxiv.org/abs/2611.16422">arXiv</a> | <a href="https://github.com/fuyichen0725/blinkmimic">code</a> (300+ stars) | <a class="zoom" href="images/blinkmimic_full.mp4">comparison video</a></div>
+      <p class="tldr">One policy tracks all 40 LAFAN1 motion clips on a simulated Unitree G1 with <b>zero failures after 3.4 minutes of training on one RTX 4090</b>. The policy is trained by back-propagating through a differentiable world model learned from parallel MuJoCo Warp simulation.</p>
+    </div>
+  </div>
+
+  <div class="paper">
+    <div class="thumb fit">
+      <a class="zoom" href="images/pts_teaser.jpg"><img src="images/pts_teaser.jpg" alt="PTS: same policy, same episode, less time"></a>
+    </div>
+    <div>
+      <div class="ptitle"><a href="https://arxiv.org/abs/2611.01390">Same Path, Less Time: Training-Free Fast Execution of Vision-Language-Action Models under Inference Latency</a></div>
+      <div class="authors"><span class="me">Fuyi Chen</span></div>
+      <div class="venue">arXiv, 2026</div>
+      <div class="plinks"><a href="https://arxiv.org/abs/2611.01390">arXiv</a></div>
+      <p class="tldr">VLA policies pause during inference and replay the slow pace of human demonstrations. PTS is a training-free execution layer that keeps <i>where</i> the arm moves but changes <i>how fast</i> it moves, raising task throughput on LIBERO by <b>33% (π<sub>0.5</sub>) and 104% (SmolVLA)</b> with equal or higher success.</p>
+    </div>
+  </div>
+
+  <div class="paper">
+    <div class="thumb fit">
+      <a href="avr.html"><img src="images/avr_thumb.png" alt="A Raven's matrix puzzle with the last panel missing and eight answer candidates; the correct one is outlined in green"></a>
+    </div>
+    <div>
+      <div class="ptitle"><a href="avr.html">Label-Free Abstract Visual Reasoning on Raven's Progressive Matrices</a></div>
+      <div class="authors"><span class="me">Fuyi Chen</span>, <a href="https://research.nottingham.edu.cn/en/persons/jianfeng-ren/">Jianfeng Ren</a></div>
+      <div class="venue">In preparation</div>
+      <div class="plinks"><a href="avr.html">project page</a></div>
+      <p class="tldr">Learns to solve Raven's Progressive Matrices from the eight given panels alone, with <b>no labels and no answer candidates</b> during training, a stricter setting than prior label-free work. <b>94.3%</b> on I-RAVEN (+4.6 over the best label-free method, 1.1 below the same network trained with answers) and 97.7% on RAVEN-FAIR.</p>
+    </div>
+  </div>
+
+  <!-- ===== Projects ===== -->
+  <h2>Projects</h2>
+
+  <div class="paper">
+    <div class="thumb fit dark">
+      <a href="dexhand.html"><video src="images/dexhand.mp4" autoplay muted loop playsinline></video></a>
+    </div>
+    <div>
+      <div class="ptitle"><a href="dexhand.html">Vision-Based Motion Retargeting from Human Videos to Dexterous Robot Hands</a></div>
+      <div class="venue">Jun 2026 &ndash; present</div>
+      <div class="plinks"><a href="dexhand.html">project page</a></div>
+      <p class="tldr">Turns ordinary RGB videos of human hands into per-frame joint trajectories for a multi-DoF robot hand, using MediaPipe hand tracking and kinematic-optimisation retargeting. Validated on single-finger, whole-hand and gesture motions.</p>
+    </div>
+  </div>
+
+  <div class="paper">
+    <div class="thumb">
+      <a href="plant.html"><img src="images/plant_device.jpg" alt="Smart plant-cultivation device"></a>
+    </div>
+    <div>
+      <div class="ptitle"><a href="plant.html">Smart Plant-Cultivation Device with Environmental Control</a></div>
+      <div class="authors">Project Leader, Student Innovation and Entrepreneurship Training Program, Chongqing University</div>
+      <div class="venue">2021 &ndash; 2022</div>
+      <div class="plinks"><a href="plant.html">project page</a></div>
+      <p class="tldr">Led a funded student team to build a cultivation box with <b>closed-loop temperature and humidity control</b>, powered by a <b>sun-tracking solar panel</b> whose self-locking motors run only when the sun moves out of range.</p>
+    </div>
+  </div>
+
+  <!-- ===== Education ===== -->
+  <h2>Education</h2>
+  <div class="row">
+    <div class="what"><b>University of Nottingham Ningbo China</b> &mdash; M.Sc. in Computer Science</div>
+    <div class="when">Sep 2025 &ndash; present</div>
+  </div>
+  <div class="row">
+    <div class="what"><b>Chongqing University</b> &mdash; B.F.A. in Broadcasting and Television Directing (film and visual media)
+      <div class="sub">Average 86.2/100</div></div>
+    <div class="when">Sep 2019 &ndash; Jun 2023</div>
+  </div>
+
+  <!-- ===== Experience ===== -->
+  <h2>Experience</h2>
+  <div class="row">
+    <div class="what"><b>Project Coordination Assistant</b>, Guangzhou Xinbairui Co., Ltd. (mechanical equipment)
+      <div class="sub">Prepared CAD drawings and parameter specifications for press-forming and slitting machines, and coordinated technical requirements between overseas clients and factory engineers.</div></div>
+    <div class="when">2024 &ndash; 2025</div>
+  </div>
+  <div class="row">
+    <div class="what"><b>New Media Operations Specialist</b>, Wuhan Construction Engineering Group
+      <div class="sub">Managed WeChat and web content, growing the corporate account from 0 to about 6,000 followers.</div></div>
+    <div class="when">2023 &ndash; 2024</div>
+  </div>
+  <div class="row">
+    <div class="what"><b>Short-Video Content Operations Intern</b>, Hubei Television
+      <div class="sub">Edited and published short videos for the <i>Helping Girls</i> programme (peak about 200,000 views).</div></div>
+    <div class="when">2021</div>
+  </div>
+
+  <footer>Last updated: Nov 2026</footer>
+  <div class="lb" id="lb" hidden><button type="button" id="lb-close" aria-label="Close">&times; Close</button><div id="lb-body"></div></div>
+  <script>
+    (function () {
+      var lb = document.getElementById('lb'), body = document.getElementById('lb-body');
+      function close() { lb.hidden = true; body.innerHTML = ''; }
+      document.querySelectorAll('a.zoom').forEach(function (a) {
+        a.addEventListener('click', function (e) {
+          e.preventDefault();
+          var src = a.getAttribute('href'), el;
+          if (/\.mp4$/i.test(src)) { el = document.createElement('video'); el.src = src; el.controls = true; el.autoplay = true; el.muted = true; el.loop = true; el.playsInline = true; }
+          else { el = document.createElement('img'); el.src = src; el.alt = ''; }
+          body.innerHTML = ''; body.appendChild(el); lb.hidden = false; document.getElementById('lb-close').focus();
+        });
+      });
+      document.getElementById('lb-close').addEventListener('click', close);
+      lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !lb.hidden) close(); });
+    })();
+  </script>
+</div>
+</body>
+</html>
